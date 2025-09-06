@@ -1,0 +1,430 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+        /* General Styles */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Store Header */
+        .store-header {
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            border-radius: 25px;
+        }
+
+            .store-header h1 {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+
+        /* Search Section */
+        .search-section {
+            margin-top: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            font-size: 1em;
+        }
+
+        .search-button {
+            padding: 12px 30px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+            .search-button:hover {
+                background: #c0392b;
+            }
+
+        /* Store Grid Layout */
+        .store-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+
+        /* Categories Sidebar */
+        .categories-sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .category-list {
+            list-style: none;
+            padding: 0;
+        }
+
+            .category-list li {
+                margin-bottom: 10px;
+            }
+
+            .category-list a {
+                display: block;
+                padding: 8px 15px;
+                color: #333;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: background 0.3s ease;
+            }
+
+                .category-list a:hover,
+                .category-list .active a {
+                    background: #f0f2f5;
+                    color: #3498db;
+                }
+
+        /* Price Filter */
+        .price-filter {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .price-range {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .price-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+            .price-inputs input {
+                width: 80px;
+                padding: 5px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+        .apply-filter {
+            width: 100%;
+            padding: 8px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+            .book-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .book-image {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+
+            .book-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .book-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .book-card:hover .book-overlay {
+            opacity: 1;
+        }
+
+        .view-details {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+            .view-details:hover {
+                background: white;
+                color: #333;
+            }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-title {
+            font-size: 1.2em;
+            margin: 0 0 5px 0;
+        }
+
+        .book-author {
+            color: #666;
+            margin: 0 0 10px 0;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .book-category {
+            background: #f0f2f5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .book-price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .quantity-selector input {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .add-to-cart {
+            flex: 1;
+            padding: 8px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+            .add-to-cart:hover {
+                background: #27ae60;
+            }
+
+        /* Pagination */
+        .pagination {
+            margin-top: 40px;
+            text-align: center;
+            justify-content: center;
+        }
+
+            .pagination a {
+                display: inline-block;
+                padding: 8px 12px;
+                margin: 0 5px;
+                color: #333;
+                text-decoration: none;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+                .pagination a.active {
+                    background: #3498db;
+                    color: white;
+                    border-color: #3498db;
+                }
+
+        /* Responsive Design */
+        media (max-width: 768px) {
+            .store-grid
+
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .categories-sidebar {
+            margin-bottom: 20px;
+        }
+
+        .books-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+        }
+    </style>
+</head>
+<body>
+    <!-- Store Header -->
+    <div class="store-header">
+        <div class="container">
+            <h1>E-Book Store</h1>
+            <p>Discover your next favorite read from our vast collection</p>
+
+            <!-- Search Bar -->
+            <div class="search-section">
+                <form class="search-form" method="get" action="@Url.Action("Index", "Store")">
+                    <div class="search-box">
+                        <input type="text" name="searchQuery" value="@Request.QueryString["searchQuery"]" placeholder="Search by book title, author..." class="search-input">
+                        <button type="submit" class="search-button">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Store Content -->
+    <div class="store-content">
+        <div class="container">
+            <div class="store-grid">
+                <!-- Categories Sidebar -->
+                <div class="categories-sidebar">
+                    <h3>Categories</h3>
+                    <ul class="category-list">
+                        <li class="@(!Request.QueryString["genre"]?.Equals("All Books", StringComparison.OrdinalIgnoreCase) ?? true ? "active" : "")">
+                            <a href="@Url.Action("Index", "Store", new { genre = "All Books" })">All Books</a>
+                        </li>
+                        @foreach (var genre in ViewBag.Genres as List<string>)
+                        {
+                            <li class="@(Request.QueryString["genre"] == genre ? "active" : "")">
+                                <a href="@Url.Action("Index", "Store", new { genre = genre })">@genre</a>
+                            </li>
+                        }
+                    </ul>
+
+                    <!-- Price Filter -->
+                    <div class="price-filter">
+                        <h3>Price Range</h3>
+                        <form method="get" action="@Url.Action("Index", "Store")">
+                            @*<input type="range" min="0" max="10000" value="@Request.QueryString["maxPrice"]" class="price-range" name="maxPrice">*@
+                            <div class="price-inputs">
+                                <input type="number" name="minPrice" value="@Request.QueryString["minPrice"]" placeholder="Min" min="0">
+                                <input type="number" name="maxPrice" value="@Request.QueryString["maxPrice"]" placeholder="Max" min="0">
+                            </div>
+                            <button type="submit" class="apply-filter">Apply Filter</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Books Grid -->
+                <div class="books-grid">
+                    @foreach (var book in Model)
+                    {
+                        <div class="book-card">
+                            <div class="book-image">
+                                <img src="@book.image" alt="@book.title">
+                                <div class="book-overlay">
+                                    <a href="@Url.Action("BookDetails", "Store", new { id = book.book_id })" class="view-details">View Details</a>
+                                </div>
+                            </div>
+                            <div class="book-info">
+                                <h3 class="book-title">@book.title</h3>
+                                <p class="book-author">by @book.author</p>
+                                <div class="book-meta">
+                                    <span class="book-category">@book.genre</span>
+                                    <span class="book-price">@book.price</span>
+                                </div>
+                                <div class="book-actions">
+                                    <div class="quantity-selector">
+                                        <input type="number" value="1" min="1" max="10">
+                                    </div>
+                                    <button class="add-to-cart" data-book-id="@book.book_id" onclick="addToCart(@book.book_id)">
+                                        Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Pagination (Optional) -->
+            <div class="pagination">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <a href="@Url.Action("Index", "Store", new { page = i })" class="@(i == 1 ? "active" : "")">@i</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+    function addToCart(bookId) {
+        // Send an AJAX request to add the book to the cart
+        $.ajax({
+            url: '@Url.Action("AddToCart", "Store")', // Ensure this URL matches your AddToCart action
+            type: 'POST',
+            data: { bookId: bookId },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message); // Success message (book added to cart)
+                } else {
+                    alert(response.message); // Error message (e.g., not logged in)
+                }
+            },
+            error: function() {
+                alert('An error occurred while adding the book to the cart.');
+            }
+        });
+    }
+    </script>
+
+</body>
+</html>
+

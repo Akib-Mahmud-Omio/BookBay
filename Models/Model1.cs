@@ -11,10 +11,41 @@ namespace E_Book_Store_1.Models
             : base("name=Connection")
         {
         }
+
+      
+        public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+      
+            modelBuilder.Entity<Book>()
+                .Property(e => e.title)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Book>()
+                .Property(e => e.author)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Book>()
+                .Property(e => e.genre)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Book>()
+                .Property(e => e.description)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Book>()
+                .Property(e => e.price)
+                .HasPrecision(10, 2);
+
+            modelBuilder.Entity<Book>()
+                .Property(e => e.region)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Book>()
+                .Property(e => e.image)
+                .IsUnicode(false);
 
             modelBuilder.Entity<Customer>()
                 .Property(e => e.username)
@@ -39,6 +70,7 @@ namespace E_Book_Store_1.Models
             modelBuilder.Entity<Customer>()
                 .Property(e => e.phone_number)
                 .IsUnicode(false);
+
         }
     }
 }

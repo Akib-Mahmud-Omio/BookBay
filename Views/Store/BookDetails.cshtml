@@ -1,0 +1,195 @@
+﻿@model E_Book_Store_1.Models.Book
+
+@{
+    ViewBag.Title = "BookDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .book-details-container {
+        max-width: 1400px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+        border-radius: 15px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .book-header {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        align-items: start;
+    }
+
+    .book-image {
+        flex-shrink: 0;
+        width: 300px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+        .book-image:hover {
+            transform: scale(1.02);
+        }
+
+    .book-info {
+        flex-grow: 1;
+    }
+
+    .book-title {
+        color: #2c3e50;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 0.5rem;
+    }
+
+    .book-meta {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+    }
+
+        .book-meta p {
+            margin: 0.5rem 0;
+            color: #34495e;
+            font-size: 1.1rem;
+        }
+
+        .book-meta strong {
+            color: #2c3e50;
+            min-width: 140px;
+            display: inline-block;
+        }
+
+    .book-description {
+        background-color: #fff;
+        padding: 1.5rem;
+        border-radius: 10px;
+        border-left: 4px solid #3498db;
+        margin-bottom: 1.5rem;
+    }
+
+    .reviews-section {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+    }
+
+    .reviews-title {
+        color: #2c3e50;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 0.5rem;
+    }
+
+    .reviews-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .review-item {
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border-left: 3px solid #3498db;
+    }
+
+    .rating {
+        color: #f1c40f;
+        font-size: 1.2rem;
+    }
+
+    .review-date {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+
+    .btn {
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-back {
+        background-color: #95a5a6;
+        color: white;
+    }
+
+        .btn-back:hover {
+            background-color: #7f8c8d;
+        }
+
+    .btn-cart {
+        background-color: #2ecc71;
+        color: white;
+    }
+
+        .btn-cart:hover {
+            background-color: #27ae60;
+        }
+</style>
+
+<div class="book-details-container">
+    <div class="book-header">
+        <img src="@Model.image" alt="@Model.title" class="book-image">
+        <div class="book-info">
+            <h1 class="book-title">@Model.title</h1>
+            <div class="book-meta">
+                <p><strong>Author:</strong> @Model.author</p>
+                <p><strong>Genre:</strong> @Model.genre</p>
+                <p><strong>Price:</strong> LKR @Model.price.ToString("0.00")</p>
+                <p><strong>Published Date:</strong> @Model.published_date</p>
+                <p><strong>Region:</strong> @Model.region</p>
+                <p><strong>Age Limit:</strong> @Model.age+</p>
+            </div>
+            <div class="book-description">
+                <p>@Model.description</p>
+            </div>
+            <div class="button-group">
+                <a href="@Url.Action("Index", "Store")" class="btn btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Books
+                </a>
+                <button class="btn btn-cart" onclick="addToCart(@Model.book_id)">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addToCart(bookId) {
+        // Send an AJAX request to add the book to the cart
+        $.ajax({
+            url: '@Url.Action("AddToCart", "Store")', // Ensure this URL matches your AddToCart action
+            type: 'POST',
+            data: { bookId: bookId },
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message); // Success message
+                } else {
+                    alert(response.message); // Error message (e.g., not logged in)
+                }
+            },
+            error: function() {
+                alert('An error occurred while adding the book to the cart.');
+            }
+        });
+    }
+</script>
