@@ -11,6 +11,97 @@ namespace E_Book_Store_1.Controllers
     {
         private Model1 db = new Model1();
 
+ public ActionResult Login()
+        {
+            ViewBag.Title = "Login";
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(string Username, string Password, bool IsAdmin = false)
+        {
+            using (var context = new Model1())
+            {
+                if (IsAdmin)
+                {
+                    // Admin login
+                    var admin = context.Admins
+                                       .FirstOrDefault(a => a.username == Username && a.password == Password);
+
+                    if (admin != null)
+                    {
+                        // Successful admin login
+                        Session["AdminId"] = admin.admin_id; // Store admin ID in session
+
+
+                        // Use helper to store customer_id
+                        SessionHelper.SetAdminId(admin.admin_id);
+
+
+                        TempData["Message"] = "Admin Login Succcess";
+                        return RedirectToAction("Dashboard", "Admin"); // Redirect to admin dashboard
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Invalid admin username or password.";
+                        return View();
+                    }
+                }
+                else
+                {
+                    // Customer login
+                    var customer = context.Customers
+                                          .FirstOrDefault(c => c.username == Username && c.password == Password);
+
+                    if (customer != null)
+                    {
+                        // Use helper to store customer_id
+                        SessionHelper.SetCustomerId(customer.customer_id);
+                        Session["CustomerId"] = customer.customer_id;
+                        TempData["Message"] = "Login Success, Welocme Back!";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Invalid username or password. Please try again.";
+                        return View();
+                    }
+                }
+            }
+        }
+
+        public ActionResult Logout()
+        {
+            // Clear the customer session using the SessionHelper
+            Helpers.SessionHelper.RemoveCustomerId();
+
+            // Optionally clear other session data if necessary
+            Session.Clear();
+
+            TempData["logoutMessage"] = "logout Successfully!";
+
+            // Redirect to the home page or login page
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult AdminLogout()
+        {
+            // Clear the customer session using the SessionHelper
+            Helpers.SessionHelper.RemoveAdminId();
+
+            // clear other session data
+            Session.Clear();
+
+            TempData["logoutMessage"] = "Admin logout Successfully!";
+
+            // Redirect to the home page or login page
+            return RedirectToAction("Login", "Account");
+        }
+
+
+
+
+
         public ActionResult Register()
         {
             ViewBag.Title = "Register";
