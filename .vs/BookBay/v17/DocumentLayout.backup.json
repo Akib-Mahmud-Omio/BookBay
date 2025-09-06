@@ -1,18 +1,33 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Not Ready\\Desktop\\BookBay\\",
+  "WorkspaceRootPath": "D:\\BookBay\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|c:\\users\\not ready\\desktop\\bookbay\\models\\view.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:models\\view.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|d:\\SDProject\\Ebook check 1\\ASP.Net_E-Book_Store-main\\E_Book_Store_1\\Helpers\\SessionHelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|c:\\users\\not ready\\desktop\\bookbay\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|c:\\users\\not ready\\desktop\\bookbay\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|D:\\BookBay\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|d:\\bookbay\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|D:\\BookBay\\views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:views\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|D:\\BookBay\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|D:\\BookBay\\models\\model1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:models\\model1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|D:\\BookBay\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,45 +42,89 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "View.cshtml",
-              "DocumentMoniker": "C:\\Users\\Not Ready\\Desktop\\BookBay\\Models\\View.cshtml",
-              "RelativeDocumentMoniker": "Models\\View.cshtml",
-              "ToolTip": "C:\\Users\\Not Ready\\Desktop\\BookBay\\Models\\View.cshtml",
-              "RelativeToolTip": "Models\\View.cshtml",
+              "Title": "SessionHelper.cs",
+              "DocumentMoniker": "d:\\SDProject\\Ebook check 1\\ASP.Net_E-Book_Store-main\\E_Book_Store_1\\Helpers\\SessionHelper.cs",
+              "RelativeDocumentMoniker": "..\\SDProject\\Ebook check 1\\ASP.Net_E-Book_Store-main\\E_Book_Store_1\\Helpers\\SessionHelper.cs",
+              "ToolTip": "d:\\SDProject\\Ebook check 1\\ASP.Net_E-Book_Store-main\\E_Book_Store_1\\Helpers\\SessionHelper.cs",
+              "RelativeToolTip": "..\\SDProject\\Ebook check 1\\ASP.Net_E-Book_Store-main\\E_Book_Store_1\\Helpers\\SessionHelper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-09-06T18:03:25.606Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HomeController.cs",
-              "DocumentMoniker": "C:\\Users\\Not Ready\\Desktop\\BookBay\\Controllers\\HomeController.cs",
-              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
-              "ToolTip": "C:\\Users\\Not Ready\\Desktop\\BookBay\\Controllers\\HomeController.cs",
-              "RelativeToolTip": "Controllers\\HomeController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-06T18:01:42.066Z",
+              "WhenOpened": "2025-09-06T18:52:24.618Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\Users\\Not Ready\\Desktop\\BookBay\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
-              "ToolTip": "C:\\Users\\Not Ready\\Desktop\\BookBay\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "Controllers\\AccountController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADcAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-06T18:00:51.526Z",
+              "Title": "Web.config",
+              "DocumentMoniker": "D:\\BookBay\\Web.config",
+              "RelativeDocumentMoniker": "Web.config",
+              "ToolTip": "D:\\BookBay\\Web.config",
+              "RelativeToolTip": "Web.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-09-06T18:05:52.704Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Web.config",
+              "DocumentMoniker": "D:\\BookBay\\Views\\Web.config",
+              "RelativeDocumentMoniker": "Views\\Web.config",
+              "ToolTip": "D:\\BookBay\\Views\\Web.config",
+              "RelativeToolTip": "Views\\Web.config",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2025-09-06T18:05:42.45Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\BookBay\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
+              "ToolTip": "D:\\BookBay\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAKkAAAAAAAAAAAAYwNIAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-06T18:05:14.165Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Model1.cs",
+              "DocumentMoniker": "D:\\BookBay\\Models\\Model1.cs",
+              "RelativeDocumentMoniker": "Models\\Model1.cs",
+              "ToolTip": "D:\\BookBay\\Models\\Model1.cs",
+              "RelativeToolTip": "Models\\Model1.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-06T18:03:56.333Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "D:\\BookBay\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "D:\\BookBay\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-06T18:01:42.066Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\BookBay\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "D:\\BookBay\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAAJYAAAAAAAAAAAAAALsAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-06T18:00:51.526Z",
+              "EditorCaption": ""
             }
           ]
         }

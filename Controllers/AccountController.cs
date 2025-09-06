@@ -1,9 +1,11 @@
-﻿using System;
+﻿using E_Book_Store_1.Helpers;
+using E_Book_Store_1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using E_Book_Store_1.Models;
+using System.Web.Razor.Tokenizer;
 
 namespace E_Book_Store_1.Controllers
 {
@@ -11,7 +13,9 @@ namespace E_Book_Store_1.Controllers
     {
         private Model1 db = new Model1();
 
- public ActionResult Login()
+
+        // GET: Account
+        public ActionResult Login()
         {
             ViewBag.Title = "Login";
             return View();
@@ -100,8 +104,6 @@ namespace E_Book_Store_1.Controllers
 
 
 
-
-
         public ActionResult Register()
         {
             ViewBag.Title = "Register";
@@ -145,5 +147,46 @@ namespace E_Book_Store_1.Controllers
             ViewBag.Title = "Register Admin";
             return View();
         }
+
+        [HttpPost]
+        public ActionResult RegisterAdmin(string Username, string Password, string MasterPin)
+        {
+            // Check if the master pin is correct
+            if (MasterPin != "123") // Change this to a secure and hashed comparison in production
+            {
+                ViewBag.ErrorMessage = "Invalid Master Pin. You are not authorized to register as an admin.";
+                return View();
+            }
+
+            using (var context = new Model1())
+            {
+                // Check if the username already exists
+                var existingAdmin = context.Admins.FirstOrDefault(a => a.username == Username);
+                if (existingAdmin != null)
+                {
+                    ViewBag.ErrorMessage = "Username already exists. Please choose a different username.";
+                    return View();
+                }
+
+                // Create a new admin
+                var newAdmin = new Admin
+                {
+                    username = Username,
+                    password = Password // Ensure to hash the password in production
+                };
+
+                context.Admins.Add(newAdmin);
+                context.SaveChanges();
+
+                ViewBag.SuccessMessage = "Admin registered successfully.";
+                return RedirectToAction("Login"); // Redirect to login after successful registration
+            }
+        }
+
+
+
+       
+
+
     }
 }
