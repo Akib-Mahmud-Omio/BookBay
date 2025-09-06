@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "RegisterAdmin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="h-100" style="margin-top:60px">
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+
+            <!-- Left Image -->
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="https://thumbs.dreamstime.com/b/bookshop-bookstore-building-facade-row-books-window-vector-illustration-99251970.jpg"
+                     class="img-fluid" alt="Sample image">
+            </div>
+
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                @using (Html.BeginForm("RegisterAdmin", "Account", FormMethod.Post))
+                {
+        <div class="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
+            <p class="lead fw-normal mb-4 me-3">Register as an Admin</p>
+        </div> <!-- Display success or error message --> if (!string.IsNullOrEmpty(ViewBag.ErrorMessage as string))
+                                        {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.ErrorMessage
+                </div> }
+                else if (!string.IsNullOrEmpty(ViewBag.SuccessMessage as string))
+                {
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.SuccessMessage
+                </div> } <!-- Username Input -->
+                <div class="form-outline mb-4">
+                    @Html.TextBox("Username", null, new { @class = "form-control form-control-lg", placeholder = "Enter admin username" })
+                    <label class="form-label" for="Username">Username</label>
+                </div> <!-- Password Input -->
+                <div class="form-outline mb-3">
+                    @Html.Password("Password", null, new { @class = "form-control form-control-lg", placeholder = "Enter admin password" })
+                    <label class="form-label" for="Password">Password</label>
+                </div> <!-- Master Pin Input -->
+                <div class="form-outline mb-3">
+                    @Html.Password("MasterPin", null, new { @class = "form-control form-control-lg", placeholder = "Enter master pin" })
+                    <label class="form-label" for="MasterPin">Master Pin</label>
+                </div>
+
+                <div class="text-center text-lg-start mt-4 pt-2">
+                    <button type="submit" class="btn btn-primary btn-lg"
+                            style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                        Register
+                    </button>
+                    <button class="btn btn-lg"
+                            style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                        <a href="@Url.Action("Login", "Account")" class="text-black">Return to login</a> 
+                    </button>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+

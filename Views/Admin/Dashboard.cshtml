@@ -1,0 +1,138 @@
+﻿@model Dictionary<string, object>
+
+@{
+    ViewBag.Title = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    /* Custom gradients for stat cards */
+    .stat-card {
+        border: none;
+        transition: transform 0.3s ease;
+    }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card.orders {
+            background: linear-gradient(45deg, #4158D0, #C850C0);
+        }
+
+        .stat-card.revenue {
+            background: linear-gradient(45deg, #00B4DB, #0083B0);
+        }
+
+        .stat-card.customers {
+            background: linear-gradient(45deg, #FF8008, #FFC837);
+        }
+
+        .stat-card.books {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+        }
+
+    /* Card styling */
+    .custom-card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+        background: linear-gradient(45deg, #5c6bc0, #3949ab);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+    }
+
+    /* Book card styling */
+    .book-card {
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+    /* Review section styling */
+    .review-item {
+        border-left: 4px solid #5c6bc0;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        transition: all 0.3s ease;
+    }
+
+        .review-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+
+    /* Star rating */
+    .star-rating {
+        color: #ffd700;
+    }
+
+    /* Low stock alert */
+    .stock-alert {
+        border-left: 4px solid #ff9800;
+        transition: all 0.3s ease;
+    }
+
+        .stock-alert:hover {
+            background-color: #fff3e0;
+        }
+
+    /* Table styling */
+    .table-hover tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    /* Custom badges */
+    .badge-custom {
+        padding: 0.5em 1em;
+        border-radius: 15px;
+    }
+</style>
+
+<!-- Include SweetAlert2 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+
+<div class="container-fluid p-4">
+    
+        <!-- Similar pattern for other stat cards -->
+        <div class="col-md-3">
+            <div class="card stat-card customers text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Total Customers</h6>
+                            <h2>@((int)Model["TotalCustomers"])</h2>
+                        </div>
+                        <i class="fas fa-users fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+@{ var message = TempData["Message"] as string; }
+
+@if (!string.IsNullOrEmpty(message))
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Welcome!',
+            text: '@message',
+            timer: 1000,  // Automatically closes after 3 seconds
+            //timerProgressBar: true,
+            showConfirmButton: false
+        });
+    </script>
+}
