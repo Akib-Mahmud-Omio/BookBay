@@ -122,10 +122,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminEBookController.cs" />
     <Compile Include="Controllers\AIController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DiscussionController.cs" />
+    <Compile Include="Controllers\EBook Controller.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -135,9 +138,15 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Discussion.cs" />
     <Compile Include="Models\DiscussionMessage.cs" />
+    <Compile Include="Models\EBook.cs" />
+    <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Model1.cs" />
+    <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\Order_Item.cs" />
+    <Compile Include="Models\ReportsViewModel.cs" />
     <Compile Include="Models\Session.cs" />
+    <Compile Include="Models\Subscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -209,6 +218,12 @@
     <Content Include="Views\Customer\OrderHistory.cshtml" />
     <Content Include="Views\Customer\Payment.cshtml" />
     <Content Include="Views\Customer\Profile.cshtml" />
+    <Content Include="Views\AdminEbook\Create.cshtml" />
+    <Content Include="Views\AdminEbook\Edit.cshtml" />
+    <Content Include="Views\AdminEbook\Index.cshtml" />
+    <Content Include="Views\AdminEbook\Subscriptions.cshtml" />
+    <Content Include="Views\Ebook\Index.cshtml" />
+    <Content Include="Views\Ebook\Read.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
