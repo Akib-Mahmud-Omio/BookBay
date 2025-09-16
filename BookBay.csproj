@@ -123,12 +123,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AIController.cs" />
+    <Compile Include="Controllers\DiscussionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\Discussion.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\Session.cs" />
@@ -190,6 +192,7 @@
     <Content Include="Views\Admin\Dashboard.cshtml" />
     <Content Include="Views\Shared\_AdminLayout.cshtml" />
     <Content Include="Views\AI\Index.cshtml" />
+    <Content Include="Views\Discussion\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
