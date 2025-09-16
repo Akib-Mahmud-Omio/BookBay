@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\hp\\Desktop\\B\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|c:\\users\\hp\\desktop\\b\\views\\discussion\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:views\\discussion\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|c:\\users\\hp\\desktop\\b\\views\\discussion\\_messagepartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:views\\discussion\\_messagepartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|c:\\users\\hp\\desktop\\b\\models\\discussionmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:models\\discussionmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,7 +19,7 @@
       "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:controllers\\discussioncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|c:\\users\\hp\\desktop\\b\\models\\model1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|C:\\Users\\hp\\Desktop\\B\\models\\model1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{23694066-85F3-4890-BD1F-69276C007B28}|BookBay.csproj|solutionrelative:models\\model1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
@@ -58,6 +66,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Views\\Discussion\\Details.cshtml",
+              "RelativeDocumentMoniker": "Views\\Discussion\\Details.cshtml",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\B\\Views\\Discussion\\Details.cshtml",
+              "RelativeToolTip": "Views\\Discussion\\Details.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-16T05:24:40.011Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "_MessagePartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Views\\Discussion\\_MessagePartial.cshtml",
+              "RelativeDocumentMoniker": "Views\\Discussion\\_MessagePartial.cshtml",
+              "ToolTip": "C:\\Users\\hp\\Desktop\\B\\Views\\Discussion\\_MessagePartial.cshtml",
+              "RelativeToolTip": "Views\\Discussion\\_MessagePartial.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-09-16T05:24:36.196Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "DiscussionMessage.cs",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Models\\DiscussionMessage.cs",
               "RelativeDocumentMoniker": "Models\\DiscussionMessage.cs",
@@ -70,7 +104,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "Model1.cs",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Models\\Model1.cs",
               "RelativeDocumentMoniker": "Models\\Model1.cs",
@@ -78,12 +112,11 @@
               "RelativeToolTip": "Models\\Model1.cs",
               "ViewState": "AgIAAEQAAAAAAAAAAAAAwF4AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-06T18:03:56.333Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-06T18:03:56.333Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "DiscussionController.cs",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Controllers\\DiscussionController.cs",
               "RelativeDocumentMoniker": "Controllers\\DiscussionController.cs",
@@ -91,12 +124,11 @@
               "RelativeToolTip": "Controllers\\DiscussionController.cs",
               "ViewState": "AgIAADYAAAAAAAAAAADwv5sAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-16T05:00:58.364Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-16T05:00:58.364Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "AccountController.cs",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
@@ -108,7 +140,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "_ViewStart.cshtml",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Views\\_ViewStart.cshtml",
               "RelativeDocumentMoniker": "Views\\_ViewStart.cshtml",
@@ -120,7 +152,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "HomeController.cs",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Controllers\\HomeController.cs",
               "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
@@ -132,7 +164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "SessionHelper.cs",
               "DocumentMoniker": "D:\\SDProject\\Ebook check 1\\ASP.Net_E-Book_Store-main\\E_Book_Store_1\\Helpers\\SessionHelper.cs",
               "ToolTip": "D:\\SDProject\\Ebook check 1\\ASP.Net_E-Book_Store-main\\E_Book_Store_1\\Helpers\\SessionHelper.cs",
@@ -142,7 +174,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
@@ -154,7 +186,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Web.config",
               "RelativeDocumentMoniker": "Web.config",
@@ -166,7 +198,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "Web.config",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Views\\Web.config",
               "RelativeDocumentMoniker": "Views\\Web.config",
@@ -178,7 +210,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\hp\\Desktop\\B\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "Views\\Home\\Index.cshtml",
