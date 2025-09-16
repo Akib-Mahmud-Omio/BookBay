@@ -4,7 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using E_Book_Store_1.Models;
-
+using System.Data.Entity;
+using E_Book_Store_1.Helpers;
 
 namespace E_Book_Store_1.Controllers
 {
@@ -12,16 +13,37 @@ namespace E_Book_Store_1.Controllers
     {
         private Model1 db = new Model1();
 
-        public ActionResult Dashboard()
+        public ActionResult Orders(string searchTerm = "")
         {
-            var totalCustomers = db.Customers.Count();
-            // Pass data to the view
-            var model = new Dictionary<string, object>
-        {
-            { "TotalCustomers", totalCustomers },
-        };
-            return View(model);
+            ViewBag.Title = "Manage Orders";
+
+            // Query the orders with their related order items and books, including the search functionality
+            var orders = db.Orders
+                .Include(o => o.Order_Item.Select(oi => oi.Book)) // Include Order_Items and related Books
+                .Include(o => o.Customer) // Include Customer details for search purposes
+                .Where(o => string.IsNullOrEmpty(searchTerm) ||
+                            o.Customer.name.Contains(searchTerm) || // Search by customer name
+                            o.Customer.phone_number.Contains(searchTerm) || // Search by phone number
+                            o.Order_Item.Any(oi => oi.Book.title.Contains(searchTerm))) // Search by book title
+                .ToList();
+
+            return View(orders);
         }
+
+        // POST: Update order status
+        [HttpPost]
+        public ActionResult UpdateOrderStatus(int orderId, string newStatus)
+        {
+            var order = db.Orders.Find(orderId);
+            if (order != null)
+            {
+                order.status = newStatus;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("Orders");
+        }
+
         public ActionResult Dashboard()
         {
             var totalOrders = db.Orders.Count();
@@ -86,6 +108,7 @@ namespace E_Book_Store_1.Controllers
 
             return View(model);
         }
+
 
         // GET: Admin/Books
         public ActionResult Books()
@@ -185,21 +208,58 @@ namespace E_Book_Store_1.Controllers
             return Json("Book Deleted Successfully!");
         }
 
-        //This function executes that the unregistered/ logged out users can not access the admin page
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        // Get All Genres (GET)
+        [HttpGet]
+        public JsonResult GetGenres()
         {
-
-
-            if (Session["AdminId"] == null)
+            try
             {
-                filterContext.Result = RedirectToAction("Login", "Account");
+                var genres = db.Books
+                               .Select(b => b.genre)
+                               .Distinct()
+                               .ToList();
+
+                return Json(genres, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        // Get Filtered Books (GET)
+        [HttpGet]
+        public JsonResult GetFilteredBooks(string genre = "", string stockFilter = "")
+        {
+            var query = db.Books.AsQueryable();
+
+            if (!string.IsNullOrEmpty(genre))
+            {
+                query = query.Where(b => b.genre.ToLower() == genre.ToLower());
             }
 
-            base.OnActionExecuting(filterContext);
-        }
-    }
 
-       public ActionResult Customers()
+            if (!string.IsNullOrEmpty(stockFilter))
+            {
+                if (stockFilter == "low-stock")
+                {
+                    query = query.Where(b => b.stock > 0 && b.stock < 5);
+                }
+                else if (stockFilter == "out-of-stock")
+                {
+                    query = query.Where(b => b.stock <= 0);
+                }
+                else if (stockFilter == "in-stock")
+                {
+                    query = query.Where(b => b.stock > 0);
+                }
+            }
+
+            var books = query.ToList();
+            return Json(books, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Customers()
         {
             var customers = db.Customers.ToList();
             return View(customers);
@@ -258,5 +318,67 @@ namespace E_Book_Store_1.Controllers
             ViewBag.Title = "Manage Reviews";
             return View();
         }
+
+        //public ActionResult Reports()
+        //{
+        //    ViewBag.Title = "Reports";
+        //    return View();
+        //}
+
+        public ActionResult Reports()
+        {
+            var model = new ReportsViewModel();
+
+            // Total sales
+            model.TotalSales = db.Orders.Sum(o => (decimal?)o.Order_Item.Sum(oi => oi.quantity * oi.Book.price)) ?? 0m;
+
+            // Orders this month
+            model.OrdersThisMonth = db.Orders.Count(o => o.order_date.HasValue && o.order_date.Value.Month == DateTime.Now.Month);
+
+            // Active customers
+            model.ActiveCustomers = db.Customers.Count(c => c.Orders.Any(o => o.status != "Cancelled"));
+
+            // Average order value
+            model.AverageOrderValue = db.Orders.Any()
+                ? db.Orders.Average(o => o.Order_Item.Sum(oi => oi.quantity * oi.Book.price))
+                : 0m;
+
+            // Monthly sales for the current year
+            model.MonthlySalesData = db.Orders
+                .Where(o => o.order_date.HasValue && o.order_date.Value.Year == DateTime.Now.Year)
+                .GroupBy(o => o.order_date.Value.Month)
+                .Select(g => g.Sum(o => (decimal?)o.Order_Item.Sum(oi => oi.quantity * oi.Book.price)) ?? 0m)
+                .ToArray();
+
+            // Sales per category
+            model.CategoriesData = db.Order_Item
+                .GroupBy(oi => oi.Book.genre)
+                .Select(g => g.Sum(oi => oi.quantity))
+                .ToArray();
+
+            // Top selling books
+            model.TopSellingBooks = db.Books
+                .OrderByDescending(b => b.Order_Item.Sum(oi => oi.quantity))
+                .Take(5)
+                .ToList();
+
+            return View(model);
+        }
+
+
+
+
+        //This function executes that the unregistered/ logged out users can not access the admin page
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+
+
+            if (Session["AdminId"] == null)
+            {
+                filterContext.Result = RedirectToAction("Login", "Account");
+            }
+
+            base.OnActionExecuting(filterContext);
+        }
     }
-    }
+}
