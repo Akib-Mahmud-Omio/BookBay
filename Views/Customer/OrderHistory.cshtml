@@ -1,0 +1,69 @@
+﻿@model IEnumerable<E_Book_Store_1.Models.Order>
+
+@{
+    ViewBag.Title = "Order History";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Your Order History</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">You have no orders yet.</div>
+    }
+    else
+    {
+        foreach (var order in Model)
+        {
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between">
+                        @*<span><strong>Order ID:</strong> @order.order_id</span>*@
+                        <span><strong>Ordered Date:</strong> @order.order_date</span>
+                        <span class="text-warning"><strong>Remove</strong></span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span><strong>Status:</strong> @order.status</span>
+                        <span><strong>Total Price:</strong> USD @order.total_price</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Book</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                                <th>Review</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in order.Order_Item)
+                            {
+                            <tr>
+                                <td style="max-width:180px;">
+                                    <img src="@item.Book.image" alt="@item.Book.title" style="width: 60px; height: 80px; object-fit: cover;">
+                                    <span>@item.Book.title</span>
+                                </td>
+                                <td>@item.quantity</td>
+                                <td>USD @item.price.ToString("F2")</td>
+                                <td>USD @(item.quantity * item.price)</td>
+                                <td style="max-width:100px;">
+                                    @if (order.status == "Completed")
+                                    {
+                                    <a href="@Url.Action("AddFeedback", "Customer", new { bookId = item.book_id })" class="btn btn-secondary btn-sm">Leave a Review</a> }
+                                    else
+                                    {
+                                    <button class="btn btn-secondary btn-sm" disabled>Waiting for Completion</button>}
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    }
+</div>
