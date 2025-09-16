@@ -1,0 +1,119 @@
+﻿@{
+    ViewBag.Title = "Bay Assist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4 d-flex flex-column" style="height: 88vh;">
+    <!-- Branding -->
+    <div class="d-flex align-items-center mb-3">
+        <div class="d-flex align-items-center justify-content-center me-2"
+             style="width:45px; height:45px; border-radius:50%; background: linear-gradient(135deg, #ff6a00 0%, #ff4081 100%); color:white; font-size:22px; box-shadow:0 2px 6px rgba(0,0,0,0.15);">
+            <i class="fas fa-robot"></i>
+        </div>
+        <h2 class="fw-bold m-0" style="color:#334155;">Bay Assist</h2>
+    </div>
+
+    <!-- Chat Area -->
+    <div id="chatArea" class="flex-grow-1 p-3 mb-3 shadow-sm"
+         style="border-radius: 12px; background: #f8fafc; border: 1px solid #e2e8f0; overflow-y: auto; min-height: 290px;">
+        <!-- messages will be appended here -->
+    </div>
+
+    <!-- Chat Input -->
+    <form id="aiForm" enctype="multipart/form-data"
+          class="border rounded shadow-sm bg-white p-2 d-flex align-items-center gap-2"
+          style="border-color:#e2e8f0;">
+        @Html.AntiForgeryToken()
+
+        <!-- Hidden file input -->
+        <input type="file" id="files" name="files" multiple accept=".pdf,.docx,.txt" class="d-none" />
+
+        <!-- + button for file upload -->
+        <button type="button" id="fileBtn" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
+                style="width:40px; height:40px; border-color:#cbd5e1;">
+            <i class="fas fa-plus"></i>
+        </button>
+
+        <!-- Prompt box -->
+        <textarea id="prompt" name="prompt" class="form-control flex-grow-1 border-0"
+                  placeholder="Ask Bay Assist anything..."
+                  style="resize: none; box-shadow: none; font-size:15px;"></textarea>
+
+        <!-- Unique Send button -->
+        <button type="submit" class="btn rounded-circle d-flex align-items-center justify-content-center"
+                id="sendBtn"
+                style="width:40px; height:40px; background: linear-gradient(135deg, #ff6a00 0%, #ff4081 100%); border:none; color:white; transition:0.3s;">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+    $(function () {
+        // File picker trigger
+        $('#fileBtn').on('click', function () {
+            $('#files').click();
+        });
+
+        function appendMessage(sender, text) {
+            var isUser = sender === 'You';
+            var bubbleColor = isUser
+                ? 'background: linear-gradient(135deg,#ff6a00,#ff4081); color:white;'
+                : 'background: #ffffff; border:1px solid #e2e8f0; color:#1e293b;';
+
+            var align = isUser ? 'justify-content-end' : 'justify-content-start';
+            var html =
+                '<div class="d-flex ' + align + ' mb-3">' +
+                    '<div class="p-2 shadow-sm" ' +
+                    'style="max-width: 75%; border-radius: 12px; white-space: pre-wrap; ' +
+                    (isUser ? 'border-bottom-right-radius: 4px;' : 'border-bottom-left-radius: 4px;') + bubbleColor + '">' +
+                        $('<div/>').text(text).html().replace(/\n/g, "<br/>") +
+                    '</div>' +
+                '</div>';
+
+            $('#chatArea').append(html).scrollTop($('#chatArea')[0].scrollHeight);
+        }
+
+        $('#aiForm').submit(function (e) {
+            e.preventDefault();
+            var form = $('#aiForm')[0];
+            var data = new FormData(form);
+
+            var userMsg = $('#prompt').val().trim();
+            appendMessage('You', userMsg || '[file upload]');
+            $('#prompt').val(''); // clear input
+
+            $('#sendBtn').prop('disabled', true).html('<span class="spinner-border spinner-border-sm text-white"></span>');
+
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: '@Url.Action("Process", "AI")',
+                type: 'POST',
+                data: data,
+                contentType: false,
+                processData: false,
+                headers: { 'RequestVerificationToken': token },
+                success: function (res) {
+                    $('#sendBtn').prop('disabled', false).html('<i class="fas fa-paper-plane"></i>');
+                    if (res.success) {
+                        appendMessage('Bay Assist', res.reply);
+                    } else {
+                        appendMessage('Bay Assist', '⚠️ Error: ' + (res.error || 'Unknown error'));
+                    }
+                },
+                error: function (xhr, status, err) {
+                    $('#sendBtn').prop('disabled', false).html('<i class="fas fa-paper-plane"></i>');
+                    var msg = err;
+                    try {
+                        var json = JSON.parse(xhr.responseText);
+                        if (json && json.error) msg = json.error;
+                    } catch (ex) {}
+                    appendMessage('Bay Assist', '❌ Request failed: ' + msg);
+                }
+            });
+        });
+    });
+    </script>
+}
