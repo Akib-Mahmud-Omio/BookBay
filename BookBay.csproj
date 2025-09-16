@@ -198,6 +198,9 @@
     <Content Include="Views\Discussion\_MessagePartial.cshtml" />
     <Content Include="Views\Admin\Books.cshtml" />
     <Content Include="Views\Admin\Customers.cshtml" />
+    <Content Include="Views\Admin\Orders.cshtml" />
+    <Content Include="Views\Admin\Reports.cshtml" />
+    <Content Include="Views\Admin\Reviews.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

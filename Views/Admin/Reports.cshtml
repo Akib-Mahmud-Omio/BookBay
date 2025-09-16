@@ -1,0 +1,109 @@
+﻿@model E_Book_Store_1.Models.ReportsViewModel
+@{
+    ViewBag.Title = "Reports";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container-fluid p-4">
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white shadow-sm h-100">
+                <div class="card-body">
+                    <h3 class="card-title h5">Total Sales</h3>
+                    <p class="card-text h3 mb-0">USD @Model.TotalSales</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white shadow-sm h-100">
+                <div class="card-body">
+                    <h3 class="card-title h5">Orders This Month</h3>
+                    <p class="card-text h3 mb-0">@Model.OrdersThisMonth</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white shadow-sm h-100">
+                <div class="card-body">
+                    <h3 class="card-title h5">Active Customers</h3>
+                    <p class="card-text h3 mb-0">@Model.ActiveCustomers</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark shadow-sm h-100">
+                <div class="card-body">
+                    <h3 class="card-title h5">Average Order Value</h3>
+                    <p class="card-text h3 mb-0">USD @Model.AverageOrderValue</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Selling Books Table -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h2 class="h4 mb-0">Top Selling Books</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-light">
+                            <th scope="col" class="border-0">Book</th>
+                            <th scope="col" class="border-0">Author</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var book in Model.TopSellingBooks)
+                        {
+                            <tr>
+                                <td class="align-middle">@book.title</td>
+                                <td class="align-middle">@book.author</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts can use Model.MonthlySalesData and Model.CategoriesData -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <canvas id="salesChart" height="150"></canvas>
+    <canvas id="categoryChart" height="150"></canvas>
+
+    <script>
+        var salesData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.MonthlySalesData));
+        var categoryData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.CategoriesData));
+
+        new Chart(document.getElementById('salesChart'), {
+            type: 'line',
+            data: {
+                labels: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+                datasets: [{
+                    label: 'Monthly Sales',
+                    data: salesData,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            }
+        });
+
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Fiction', 'Non-Fiction', 'Science', 'History', 'Other'], // Example genres
+                datasets: [{
+                    label: 'Books Sold per Category',
+                    data: categoryData,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgb(54, 162, 235)',
+                    borderWidth: 1
+                }]
+            }
+        });
+    </script>
+</div>

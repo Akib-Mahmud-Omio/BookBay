@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Manage Orders";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Manage Orders</h2>
+
+<!-- Search Bar -->
+<form method="get" action="@Url.Action("Orders", "Admin")">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search by customer name, phone number, or book title" name="searchTerm" value="@Request["searchTerm"]" id="searchInput" />
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </div>
+</form>
+
+<!-- Orders Table -->
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Book Image</th>
+                <th>Book Title</th>
+                <th>Quantity</th>
+                <th>Customer Name</th>  <!-- New column for Customer Name -->
+                <th>Phone Number</th>    <!-- New column for Customer Phone -->
+                <th>Ordered Date</th>
+                <th>Order Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="booksTableBody">
+            @foreach (var order in Model)
+            {
+                foreach (var orderItem in order.Order_Item)
+                {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(orderItem.Book.image))
+                    {
+                        <img src="@Url.Content(orderItem.Book.image)" alt="Book Image" style="width:25px; height: 50px;" />
+                    }
+                    else
+                    {
+                        <span>No Image</span>
+                    }
+                </td>
+                <td>@orderItem.Book.title</td>
+                <td>@orderItem.quantity</td>
+                <td>@order.Customer.name</td>  <!-- Display Customer Name -->
+                <td>@order.Customer.phone_number</td>  <!-- Display Customer Phone Number -->
+                <td>@order.order_date</td>
+                <td>
+                    <span class="badge
+                                @if (order.status == "Pending") { <text>bg-warning</text> }
+                                else if (order.status == "Completed") { <text>bg-info</text> }
+                                else if (order.status == "Cancelled") { <text>bg-danger</text> }
+                            ">
+                        @order.status
+                    </span>
+                </td>
+                <td>
+                    <!-- Change Status Dropdown -->
+                    <form action="@Url.Action("UpdateOrderStatus", "Admin")" method="post" style="display:inline;">
+                        <input type="hidden" name="orderId" value="@order.order_id" />
+                        <select class="form-control" name="newStatus" onchange="this.form.submit()">
+                            <option value="Pending" @(order.status == "Pending" ? "selected" : "")>Pending</option>
+                            <option value="Completed" @(order.status == "Completed" ? "selected" : "")>Completed</option>
+                            <option value="Cancelled" @(order.status == "Cancelled" ? "selected" : "")>Cancelled</option>
+                        </select>
+                    </form>
+                </td>
+            </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', e => {
+        const query = e.target.value.toLowerCase();
+        document.querySelectorAll('#booksTableBody tr').forEach(row => {
+            row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none';
+        });
+    });
+</script>
