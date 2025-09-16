@@ -1,0 +1,533 @@
+@model IEnumerable<E_Book_Store_1.Models.EBook>
+
+@{
+    ViewBag.Title = "E-Books";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Book Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <style>
+        /* General Styles */
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 20px;
+            margin-bottom: 30px;
+        }
+
+        /* Store Header */
+        .store-header {
+            background: linear-gradient(to right, #2c3e50, #3498db);
+            color: white;
+            padding: 40px 0;
+            margin-bottom: 40px;
+            border-radius: 25px;
+        }
+
+            .store-header h1 {
+                font-size: 2.5em;
+                margin-bottom: 10px;
+            }
+
+        /* Search Section */
+        .search-section {
+            margin-top: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px 0 0 25px;
+            font-size: 1em;
+        }
+
+        .search-button {
+            padding: 12px 30px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+            .search-button:hover {
+                background: #c0392b;
+            }
+
+        /* Store Grid Layout */
+        .store-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+
+        /* Categories Sidebar */
+        .categories-sidebar {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .category-list {
+            list-style: none;
+            padding: 0;
+        }
+
+            .category-list li {
+                margin-bottom: 10px;
+            }
+
+            .category-list a {
+                display: block;
+                padding: 8px 15px;
+                color: #333;
+                text-decoration: none;
+                border-radius: 5px;
+                transition: background 0.3s ease;
+            }
+
+                .category-list a:hover,
+                .category-list .active a {
+                    background: #f0f2f5;
+                    color: #3498db;
+                }
+
+        /* Price Filter */
+        .price-filter {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            display: none;
+        }
+
+        .price-inputs {
+            display: none;
+        }
+
+            .price-inputs input {
+                display: none;
+            }
+
+        .apply-filter {
+            display: none;
+        }
+
+        /* Books Grid */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .book-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+            .book-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .book-image {
+            position: relative;
+            height: 400px;
+            overflow: hidden;
+        }
+
+            .book-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .book-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .book-card:hover .book-overlay {
+            opacity: 1;
+        }
+
+        .view-details {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border: 2px solid white;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+            .view-details:hover {
+                background: white;
+                color: #333;
+            }
+
+        .book-info {
+            padding: 20px;
+        }
+
+        .book-title {
+            font-size: 1.2em;
+            margin: 0 0 5px 0;
+        }
+
+        .book-author {
+            color: #666;
+            margin: 0 0 10px 0;
+        }
+
+        .book-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .book-category {
+            background: #f0f2f5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+
+        .book-price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .book-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .read-book-btn {
+            flex: 1;
+            padding: 10px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-align: center;
+        }
+
+            .read-book-btn:hover {
+                background: #27ae60;
+            }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: none;
+            border-radius: 10px;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+            .modal-content h4 {
+                margin-top: 0;
+                color: #2c3e50;
+                text-align: center;
+            }
+
+            .modal-content p {
+                text-align: center;
+                color: #666;
+            }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn-success {
+            background: #2ecc71;
+            color: white;
+        }
+
+            .btn-success:hover {
+                background: #27ae60;
+            }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+            .btn-danger:hover {
+                background: #c0392b;
+            }
+
+        /* Pagination */
+        .pagination {
+            margin-top: 40px;
+            text-align: center;
+            justify-content: center;
+        }
+
+            .pagination a {
+                display: inline-block;
+                padding: 8px 12px;
+                margin: 0 5px;
+                color: #333;
+                text-decoration: none;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+
+                .pagination a.active {
+                    background: #3498db;
+                    color: white;
+                    border-color: #3498db;
+                }
+
+        /* Mobile Responsive */
+        .mobile-responsive .store-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .mobile-responsive .categories-sidebar {
+            margin-bottom: 20px;
+        }
+
+        .mobile-responsive .books-grid {
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        }
+    </style>
+</head>
+<body>
+    <!-- Store Header -->
+    <div class="store-header">
+        <div class="container">
+            <h1>E-Book Store</h1>
+            <p>Discover your next favorite read from our vast collection</p>
+
+            <!-- Search Bar -->
+            <div class="search-section">
+                <form class="search-form" method="get" action="@Url.Action("Index", "EBook")">
+                    <div class="search-box">
+                        <input type="text" name="searchQuery" value="@Request.QueryString["searchQuery"]" placeholder="Search by book title, author..." class="search-input" />
+                        <button type="submit" class="search-button">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Store Content -->
+    <div class="store-content">
+        <div class="container">
+            <div class="store-grid">
+                <!-- Categories Sidebar -->
+                <div class="categories-sidebar">
+                    <h3>Categories</h3>
+                    <ul class="category-list">
+                        <li class="@(string.IsNullOrEmpty(Request.QueryString["genre"]) ? "active" : "")">
+                            <a href="@Url.Action("Index", "EBook")">All Books</a>
+                        </li>
+                        <li><a href="@Url.Action("Index", "EBook", new { genre = "Fiction" })">Fiction</a></li>
+                        <li><a href="@Url.Action("Index", "EBook", new { genre = "Non-Fiction" })">Non-Fiction</a></li>
+                        <li><a href="@Url.Action("Index", "EBook", new { genre = "Science" })">Science</a></li>
+                        <li><a href="@Url.Action("Index", "EBook", new { genre = "Technology" })">Technology</a></li>
+                        <li><a href="@Url.Action("Index", "EBook", new { genre = "Romance" })">Romance</a></li>
+                        <li><a href="@Url.Action("Index", "EBook", new { genre = "Mystery" })">Mystery</a></li>
+                    </ul>
+
+                    <!-- Price Filter -->
+                    <div class="price-filter">
+                        <h3>Price Range</h3>
+                        <form method="get" action="@Url.Action("Index", "EBook")">
+                            <div class="price-inputs">
+                                <input type="number" name="minPrice" value="@Request.QueryString["minPrice"]" placeholder="Min" min="0" step="0.01" />
+                                <input type="number" name="maxPrice" value="@Request.QueryString["maxPrice"]" placeholder="Max" min="0" step="0.01" />
+                            </div>
+                            <button type="submit" class="apply-filter">Apply Filter</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Books Grid -->
+                <div class="books-grid">
+                    @{
+                        var bookList = Model.ToList();
+                    }
+                    @for (int i = 0; i < bookList.Count; i++)
+                    {
+                        var book = bookList[i];
+                        <div class="book-card">
+                            <div class="book-image">
+                                <img src="@book.cover_image" alt="@book.title" />
+                            </div>
+                            <div class="book-info">
+                                <h3 class="book-title">@book.title</h3>
+                                <p class="book-author">by @book.author</p>
+
+                                <div class="book-meta">
+                                    <span class="book-category">@book.genre</span>
+                                    <span class="book-price">$@book.price</span>
+                                </div>
+
+                                <div class="book-actions">
+                                    <!-- uses handleRead which checks subscription before opening modal -->
+                                    <button class="read-book-btn" onclick="handleRead(@book.ebook_id)">
+                                        <i class="fas fa-book-open"></i> Read
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+
+            <!-- Pagination (Optional) -->
+            <div class="pagination">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <a href="@Url.Action("Index", "EBook", new { page = i })" class="@(i == 1 ? "active" : "")">@i</a>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Subscription Popup -->
+    <div id="subscriptionPopup" class="modal" style="display:none;">
+        <div class="modal-content">
+            <h4><i class="fas fa-star"></i> Subscribe to Read</h4>
+            <p>Select a subscription plan to read and download all e-books during the subscription period.</p>
+
+            <form method="post" action="@Url.Action("Subscribe", "EBook")">
+                <input type="hidden" id="ebookIdInput" name="ebookId" />
+                <div class="mb-3">
+                    <label><input type="radio" name="planMonths" value="1" checked /> 1 Month - $5</label><br />
+                    <label><input type="radio" name="planMonths" value="6" /> 6 Months - $25</label><br />
+                    <label><input type="radio" name="planMonths" value="12" /> 12 Months - $45</label>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Subscribe & Pay
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="closeSubscriptionPopup()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        // Called when user clicks "Read" for a book
+        function handleRead(ebookId) {
+            // 1) Check user subscription status using JSON endpoint
+            $.get('@Url.Action("IsUserSubscribed", "EBook")', function (resp) {
+                if (!resp.isAuthenticated) {
+                    // not logged in -> go to login page
+                    window.location.href = '@Url.Action("Login", "Account")';
+                    return;
+                }
+
+                if (resp.isSubscribed) {
+                    // user has an active site-wide subscription -> go straight to Read
+                    window.location.href = '/EBook/Read/' + ebookId;
+                } else {
+                    // not subscribed -> show the subscription popup with ebookId filled
+                    openSubscriptionPopup(ebookId);
+                }
+            }).fail(function () {
+                // In case of error, fallback to showing subscription popup
+                openSubscriptionPopup(ebookId);
+            });
+        }
+
+        function openSubscriptionPopup(ebookId) {
+            document.getElementById("ebookIdInput").value = ebookId;
+            document.getElementById("subscriptionPopup").style.display = "block";
+        }
+
+        function closeSubscriptionPopup() {
+            document.getElementById("subscriptionPopup").style.display = "none";
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function (event) {
+            var modal = document.getElementById("subscriptionPopup");
+            if (event.target == modal) {
+                closeSubscriptionPopup();
+            }
+        }
+
+        // Add mobile responsiveness through JavaScript
+        function checkScreenSize() {
+            if (window.innerWidth <= 768) {
+                document.body.classList.add('mobile-responsive');
+            } else {
+                document.body.classList.remove('mobile-responsive');
+            }
+        }
+
+        // Check on load and resize
+        window.addEventListener('load', checkScreenSize);
+        window.addEventListener('resize', checkScreenSize);
+
+    </script>
+</body>
+</html>

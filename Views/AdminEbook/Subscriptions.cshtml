@@ -1,0 +1,25 @@
+@model IEnumerable<E_Book_Store_1.Models.Subscription>
+
+<h2>Subscription List</h2>
+
+<table class="table table-striped">
+    <tr>
+        <th>Customer</th>
+        <th>Plan</th>
+        <th>Price</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Active</th>
+    </tr>
+    @foreach (var s in Model)
+    {
+        <tr>
+            <td>@s.Customer.name (@s.Customer.email)</td>
+            <td>@s.plan_name (@s.plan_months mo)</td>
+            <td>$@s.price</td>
+            <td>@s.start_date.ToString("yyyy-MM-dd")</td>
+            <td>@s.end_date.ToString("yyyy-MM-dd")</td>
+            <td>@(s.is_active ? "Yes" : "No")</td>
+        </tr>
+    }
+</table>

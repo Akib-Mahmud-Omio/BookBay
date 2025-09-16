@@ -1,0 +1,69 @@
+@model E_Book_Store_1.Models.EBook
+
+@{
+    ViewBag.Title = "Edit E-Book";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2>Edit E-Book</h2>
+    <hr />
+
+    @using (Html.BeginForm("Edit", "AdminEBook", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.ebook_id)
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.title, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.title, new { @class = "form-control", placeholder = "Enter title" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.author, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.author, new { @class = "form-control", placeholder = "Enter author" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.description, new { @class = "form-label" })
+            @Html.TextAreaFor(model => model.description, new { @class = "form-control", rows = 4, placeholder = "Enter description" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.genre, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.genre, new { @class = "form-control", placeholder = "Enter genre" })
+        </div>
+
+        <div class="form-group mb-3">
+            @Html.LabelFor(model => model.price, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.price, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Enter price" })
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Current Cover</label><br />
+            @if (!string.IsNullOrEmpty(Model.cover_image))
+            {
+                <img src="@Url.Content(Model.cover_image)" width="120" class="img-thumbnail mb-2" />
+            }
+            <input type="file" name="cover" class="form-control" />
+        </div>
+
+        <div class="form-group mb-3">
+            <label class="form-label">Current File</label><br />
+            @if (!string.IsNullOrEmpty(Model.file_path))
+            {
+                <a href="@Url.Content(Model.file_path)" target="_blank" class="btn btn-sm btn-outline-primary">View Current PDF</a>
+            }
+            <input type="file" name="file" class="form-control mt-2" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-secondary ms-2" })
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}

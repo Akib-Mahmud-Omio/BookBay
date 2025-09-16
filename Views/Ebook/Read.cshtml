@@ -1,0 +1,81 @@
+@model E_Book_Store_1.Models.EBook
+@{
+    bool isSubscribed = ViewBag.IsSubscribed ?? false;
+    bool justSubscribed = ViewBag.ShowSubscribeSuccess ?? false;
+}
+
+<h2>@Model.title</h2>
+<p><strong>Author:</strong> @Model.author</p>
+
+@if (isSubscribed || justSubscribed)
+{
+    <!-- Show book immediately when subscribed -->
+    <iframe src="@Url.Content(Model.file_path)" width="100%" height="600px"></iframe>
+    <br />
+    <a href="@Url.Content(Model.file_path)" download class="btn btn-success mt-2">Download PDF</a>
+}
+else
+{
+    <!-- Blurred preview -->
+    <div style="filter: blur(5px); pointer-events:none;">
+        <iframe src="@Url.Content(Model.file_path)" width="100%" height="600px"></iframe>
+    </div>
+
+    <div class="alert alert-warning mt-3">
+        You must subscribe to read this e-book.
+        <button class="btn btn-primary" onclick="openSubscriptionPopup(@Model.ebook_id)">Subscribe</button>
+    </div>
+
+    <!-- Subscription Modal -->
+    <div id="subscriptionPopup" class="modal" style="display:none;">
+        <div class="modal-content p-4" style="max-width:500px; margin:auto; background:#fff; border-radius:8px; box-shadow:0 2px 10px rgba(0,0,0,0.3);">
+            <h4><i class="fas fa-star"></i> Subscribe to Read</h4>
+            <p>Select a subscription plan to read and download all e-books during the subscription period.</p>
+
+            <form method="post" action="@Url.Action("Subscribe", "EBook")">
+                <input type="hidden" id="ebookIdInput" name="ebookId" value="@Model.ebook_id" />
+
+                <div class="modal-body mt-2">
+                    <label><input type="radio" name="planMonths" value="1" checked /> 1 Month - $5</label><br />
+                    <label><input type="radio" name="planMonths" value="6" /> 6 Months - $25</label><br />
+                    <label><input type="radio" name="planMonths" value="12" /> 12 Months - $45</label>
+                </div>
+
+                <div class="modal-actions mt-3">
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-check"></i> Subscribe & Pay
+                    </button>
+                    <button type="button" class="btn btn-danger" onclick="closeSubscriptionPopup()">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        var isSubscribed = @Json.Encode(isSubscribed);
+        var justSubscribed = @Json.Encode(justSubscribed);
+
+        document.addEventListener("DOMContentLoaded", function () {
+            if (isSubscribed || justSubscribed) {
+                var modal = document.getElementById("subscriptionPopup");
+                if (modal) {
+                    modal.style.display = "none"; // Hide if already subscribed
+                }
+            }
+        });
+
+        function openSubscriptionPopup(ebookId) {
+            var hidden = document.getElementById("ebookIdInput");
+            if (hidden) hidden.value = ebookId;
+            document.getElementById("subscriptionPopup").style.display = "block";
+        }
+
+        function closeSubscriptionPopup() {
+            document.getElementById("subscriptionPopup").style.display = "none";
+        }
+    </script>
+}

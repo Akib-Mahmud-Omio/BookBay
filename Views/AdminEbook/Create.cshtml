@@ -1,0 +1,45 @@
+@model E_Book_Store_1.Models.EBook
+
+<h2>Add New E-Book</h2>
+
+@using (Html.BeginForm("Create", "AdminEBook", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label>Title</label>
+        @Html.TextBoxFor(m => m.title, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Author</label>
+        @Html.TextBoxFor(m => m.author, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        @Html.TextAreaFor(m => m.description, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Genre</label>
+        @Html.TextBoxFor(m => m.genre, new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <label>Price</label>
+        @Html.TextBoxFor(m => m.price, new { @class = "form-control", type = "number", step = "0.01", placeholder = "Enter price" })
+    </div>
+
+    <div class="form-group">
+        <label>Upload PDF</label>
+        <input type="file" name="file" />
+    </div>
+
+    <div class="form-group">
+        <label>Upload Cover Image</label>
+        <input type="file" name="cover" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+}

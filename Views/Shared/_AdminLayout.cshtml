@@ -55,6 +55,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="@Url.Action("AdminLogout", "Account")">Logout</a>
                         </li>
+
+
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Controller"].ToString() == "AdminEBook" ? "active" : "")"
+                               href="@Url.Action("Index", "AdminEBook")">E-Books</a>
+                        </li>
+
+
                     </ul>
                 </div>
 

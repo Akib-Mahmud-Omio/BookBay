@@ -1,0 +1,89 @@
+@model IEnumerable<E_Book_Store_1.Models.EBook>
+
+@{
+    ViewBag.Title = "Manage E-Books";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Manage E-Books</h2>
+        @Html.ActionLink("Add New E-Book", "Create", "AdminEBook", null, new { @class = "btn btn-success" })
+    </div>
+
+    <!-- Search Bar -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search by title, author, or description..." />
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered" id="ebookTable">
+            <thead class="table-light">
+                <tr>
+                    <th>Cover</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Description</th>
+                    <th>File</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <img src="@item.cover_image" width="60" class="img-thumbnail" alt="cover" />
+                        </td>
+                        <td>@item.title</td>
+                        <td>@item.author</td>
+                        <td>@item.description</td>
+                        <td>
+                            <a href="@Url.Content(item.file_path)" target="_blank" class="btn btn-sm btn-outline-primary">View PDF</a>
+                        </td>
+                        <td>
+                            <div class="btn-group">
+                                @Html.ActionLink("Edit", "Edit", "AdminEBook", new { id = item.ebook_id }, new { @class = "btn btn-sm btn-outline-primary" })
+                                <button class="btn btn-sm btn-outline-danger ms-2" onclick="deleteEBook(@item.ebook_id)">Delete</button>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        //  Search filter
+        $('#searchInput').on('keyup', function () {
+            var value = $(this).val().toLowerCase();
+            $("#ebookTable tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+            });
+        });
+
+        // Delete EBook
+        function deleteEBook(id) {
+            if (confirm("Are you sure you want to delete this e-book?")) {
+                $.ajax({
+                    url: '/AdminEBook/Delete/' + id,
+                    type: 'POST',
+                    success: function (response) {
+                        alert(response.message || "E-Book deleted successfully!");
+                        location.reload();
+                    },
+                    error: function () {
+                        alert("Error deleting the e-book.");
+                    }
+                });
+            }
+        }
+    </script>
+}
