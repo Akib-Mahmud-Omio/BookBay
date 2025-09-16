@@ -1,0 +1,280 @@
+﻿
+@{
+    ViewBag.Title = "Books";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Books</title>
+</head>
+<body>
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Manage Books</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEditBookModal">
+                <i class="fas fa-plus"></i> Add New Book
+            </button>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search by title, author, genre...">
+                    <button class="btn btn-outline-secondary"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="genreFilter">
+                        <option value="">Filter by Genre</option>
+                        <!-- Dynamic genres will be inserted here -->
+                    </select>
+
+                    <select class="form-select" id="stockFilter">
+                        <option value="">Filter by Stock</option>
+                        <option value="in-stock">In Stock</option>
+                        <option value="low-stock">Low Stock</option>
+                        <option value="out-of-stock">Out of Stock</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Books Table -->
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Stock</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="booksTableBody">
+                    @foreach (var book in Model)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@book.image" alt="@book.title" class="img-thumbnail" style="width: 50px;">
+                            </td>
+                            <td>@book.title</td>
+                            <td>@book.author</td>
+                            <td>@book.genre</td>
+                            <td>
+                                <span class="@(book.stock <= 0 ? "text-danger" : book.stock < 5 ? "text-warning" : "text-success")">@book.stock</span>
+                            </td>
+                            <td>USD @book.price</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="editBook(@book.book_id)">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger ms-2" onclick="deleteBook(@book.book_id)">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Add/Edit Modal -->
+        <div class="modal fade" id="addEditBookModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add/Edit Book</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="bookForm">
+                            <div class="mb-3">
+                                <label for="bookTitle" class="form-label">Title</label>
+                                <input type="text" class="form-control" id="bookTitle" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookAuthor" class="form-label">Author</label>
+                                <input type="text" class="form-control" id="bookAuthor" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookGenre" class="form-label">Genre</label>
+                                <input type="text" class="form-control" id="bookGenre" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookPrice" class="form-label">Price</label>
+                                <input type="number" class="form-control" id="bookPrice" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookStock" class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="bookStock" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookImage" class="form-label">Image URL</label>
+                                <input type="url" class="form-control" id="bookImage">
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="bookDescription" rows="3"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookPublishedDate" class="form-label">Published Date</label>
+                                <input type="date" class="form-control" id="bookPublishedDate" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookRegion" class="form-label">Region</label>
+                                <input type="text" class="form-control" id="bookRegion" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bookAge" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="bookAge" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="saveBookBtn" onclick="saveBook()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Populate the genres filter dropdown
+            $.ajax({
+                url: '/Admin/GetGenres',
+                type: 'GET',
+                success: function (data) {
+                    console.log(data); // Check if all expected genres are present
+                    data.forEach(function (genre) {
+                        $('#genreFilter').append(`<option value="${genre}">${genre}</option>`);
+                    });
+                }
+            });
+
+
+            // Filter Books by genre and stock
+            $('#genreFilter, #stockFilter').on('change', function () {
+                let genre = $('#genreFilter').val();
+                let stockFilter = $('#stockFilter').val();
+                console.log(`Selected Genre: ${genre}, Stock Filter: ${stockFilter}`); // Debug
+                $.ajax({
+                    url: '/Admin/GetFilteredBooks',
+                    type: 'GET',
+                    data: { genre: genre, stockFilter: stockFilter },
+                    success: function (data) {
+                        console.log(data); // Check filtered books
+                        let rows = '';
+                        data.forEach(function (book) {
+                            rows += `<tr>
+                                        <td><img src="${book.image}" class="img-thumbnail" style="width: 50px;"></td>
+                                        <td>${book.title}</td>
+                                        <td>${book.author}</td>
+                                        <td>${book.genre}</td>
+                                        <td class="text-${book.stock <= 0 ? 'danger' : book.stock < 5 ? 'warning' : 'success'}">${book.stock}</td>
+                                        <td>USD ${book.price}</td>
+                                        <td>
+                                            <button class="btn btn-outline-primary" onclick="editBook(${book.book_id})"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-outline-danger" onclick="deleteBook(${book.book_id})"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>`;
+                        });
+                        $('#booksTableBody').html(rows);
+                    }
+                });
+            });
+        });
+
+        // Save book function
+        function saveBook() {
+            var book = {
+                title: $('#bookTitle').val(),
+                author: $('#bookAuthor').val(),
+                genre: $('#bookGenre').val(),
+                price: $('#bookPrice').val(),
+                stock: $('#bookStock').val(),
+                image: $('#bookImage').val(),
+                description: $('#bookDescription').val(),
+                published_date: $('#bookPublishedDate').val(),
+                region: $('#bookRegion').val(),
+                age: $('#bookAge').val()
+            };
+
+            $.ajax({
+                url: '/Admin/AddBook',
+                type: 'POST',
+                data: book,
+                success: function (response) {
+                    alert(response);
+                    location.reload();
+                }
+            });
+        }
+
+        // Edit book function
+        function editBook(id) {
+            $.ajax({
+                url: '/Admin/GetBook',
+                type: 'GET',
+                data: { id: id },
+                success: function (book) {
+                    $('#bookTitle').val(book.title);
+                    $('#bookAuthor').val(book.author);
+                    $('#bookGenre').val(book.genre);
+                    $('#bookPrice').val(book.price);
+                    $('#bookStock').val(book.stock);
+                    $('#bookImage').val(book.image);
+                    $('#bookDescription').val(book.description);
+                    $('#bookPublishedDate').val(book.published_date);
+                    $('#bookRegion').val(book.region);
+                    $('#bookAge').val(book.age);
+
+                    $('#saveBookBtn').text('Update Book').off('click').on('click', function () {
+                        saveBook(id);
+                    });
+                    $('#addEditBookModal').modal('show');
+                }
+            });
+        }
+
+
+        // Delete book function
+        function deleteBook(id) {
+            if (confirm("Are you sure you want to delete this book?")) {
+                $.ajax({
+                    url: '/Admin/DeleteBook',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        alert(response);
+                        location.reload();
+                    }
+                });
+            }
+        }
+
+        document.getElementById('searchInput').addEventListener('input', e => {
+            const query = e.target.value.toLowerCase();
+            document.querySelectorAll('#booksTableBody tr').forEach(row => {
+                row.style.display = row.textContent.toLowerCase().includes(query) ? '' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
