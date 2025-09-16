@@ -131,6 +131,7 @@
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\Discussion.cs" />
+    <Compile Include="Models\DiscussionMessage.cs" />
     <Compile Include="Models\Log.cs" />
     <Compile Include="Models\Model1.cs" />
     <Compile Include="Models\Session.cs" />
