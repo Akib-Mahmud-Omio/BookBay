@@ -188,7 +188,7 @@ namespace E_Book_Store_1.Controllers
         //This function executes that the unregistered/ logged out users can not access the admin page
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            
+
 
             if (Session["AdminId"] == null)
             {
@@ -198,4 +198,65 @@ namespace E_Book_Store_1.Controllers
             base.OnActionExecuting(filterContext);
         }
     }
-}
+
+       public ActionResult Customers()
+        {
+            var customers = db.Customers.ToList();
+            return View(customers);
+        }
+
+        public ActionResult GetCustomer(int id)
+        {
+            var customer = db.Customers.Find(id);
+            if (customer == null) return HttpNotFound();
+            return Json(new
+            {
+                customer_id = customer.customer_id,
+                name = customer.name,
+                email = customer.email,
+                phone_number = customer.phone_number,
+                address = customer.address
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult SaveCustomer(Customer customer)
+        {
+            var existingCustomer = db.Customers.Find(customer.customer_id); // Find existing customer by ID
+            if (existingCustomer != null)
+            {
+                // Update only the fields that were modified
+                if (!string.IsNullOrEmpty(customer.name)) existingCustomer.name = customer.name;
+                if (!string.IsNullOrEmpty(customer.email)) existingCustomer.email = customer.email;
+                if (!string.IsNullOrEmpty(customer.phone_number)) existingCustomer.phone_number = customer.phone_number;
+                if (!string.IsNullOrEmpty(customer.address)) existingCustomer.address = customer.address;
+            }
+            else
+            {
+                // Add new customer if it doesn't exist
+                db.Customers.Add(customer);
+            }
+
+            db.SaveChanges();
+            return Json("Customer updated successfully!");
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteCustomer(int id)
+        {
+            var customer = db.Customers.Find(id);
+            if (customer == null) return HttpNotFound();
+            db.Customers.Remove(customer);
+            db.SaveChanges();
+            return Json("Customer deleted successfully!");
+        }
+
+
+        public ActionResult Reviews()
+        {
+            ViewBag.Title = "Manage Reviews";
+            return View();
+        }
+    }
+    }
