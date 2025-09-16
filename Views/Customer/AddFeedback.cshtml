@@ -1,0 +1,156 @@
+﻿@{
+    ViewBag.Title = "Leave a Review";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container my-5">
+    <div class="add-review-section">
+        <h2 class="text-center mb-4 review-header">Review for @ViewBag.BookTitle</h2>
+        <form method="post" action="" class="review-form">
+            <div class="form-group">
+                <label for="rating">Rating (1-5)</label>
+                <select name="rating" id="rating" class="form-control custom-select" required>
+                    <option value="">Select Rating</option>
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="comment">Comment</label>
+                <textarea name="comment" id="comment" class="form-control custom-textarea" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-gradient mt-3">Submit Review</button>
+        </form>
+    </div>
+</div>
+<div class="reviews-section">
+    <h2 class="reviews-title">Reviews</h2>
+    @if (ViewBag.Reviews != null && ((List<E_Book_Store_1.Models.Feedback>)ViewBag.Reviews).Count > 0)
+    {
+        <ul class="reviews-list">
+            @foreach (var review in ViewBag.Reviews)
+            {
+                <li class="review-item">
+                    <div class="rating">
+                        @for (int i = 0; i < review.rating; i++)
+                        {
+                            <i class="fas fa-star"></i>
+                        }
+                        @for (int i = review.rating; i < 5; i++)
+                        {
+                            <i class="far fa-star"></i>
+                        }
+                    </div>
+                    <p>@review.comment</p>
+                    <p class="review-date">Posted on: @review.date</p>
+                </li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>No reviews yet for this book.</p>
+    }
+</div>
+<style>
+    .add-review-section {
+        background: linear-gradient(135deg, #f6f8ff 0%, #f1f4ff 100%);
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    .review-header {
+        color: #4a47a3;
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .review-form label {
+        color: #6c63ff;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .custom-select {
+        background-color: #ffffff;
+        border: 2px solid #e0e7ff;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .custom-select:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
+        }
+
+    .custom-textarea {
+        background-color: #ffffff;
+        border: 2px solid #e0e7ff;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+        .custom-textarea:focus {
+            border-color: #6c63ff;
+            box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
+        }
+
+    .btn-gradient {
+        background: linear-gradient(45deg, #6c63ff 0%, #4a47a3 100%);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        padding: 10px 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+        .btn-gradient:hover {
+            background: linear-gradient(45deg, #4a47a3 0%, #6c63ff 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.4);
+            color: white;
+        }
+
+    /* Existing styles */
+    .reviews-section {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-top: 2rem;
+    }
+
+    .reviews-title {
+        color: #2c3e50;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #3498db;
+        padding-bottom: 0.5rem;
+    }
+
+    .reviews-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .review-item {
+        background-color: #fff;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        border-left: 3px solid #3498db;
+    }
+
+    .rating {
+        color: #f1c40f;
+        font-size: 1.2rem;
+    }
+
+    .review-date {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+</style>
