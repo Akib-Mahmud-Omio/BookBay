@@ -87,6 +87,103 @@ namespace E_Book_Store_1.Controllers
             return View(model);
         }
 
+        // GET: Admin/Books
+        public ActionResult Books()
+        {
+            var books = db.Books.ToList();
+            return View(books);
+        }
+
+        // Add Book (POST)
+        [HttpPost]
+        public JsonResult AddBook(Book book)
+        {
+            // Validate book
+            if (string.IsNullOrEmpty(book.title))
+            {
+                return Json("Title is required.");
+            }
+            if (string.IsNullOrEmpty(book.author))
+            {
+                return Json("Author is required.");
+            }
+            if (string.IsNullOrEmpty(book.genre))
+            {
+                return Json("Genre is required.");
+            }
+            if (book.stock < 0)
+            {
+                return Json("Stock must be greater than or equal to 0.");
+            }
+            if (book.price <= 0)
+            {
+                return Json("Price must be greater than 0.");
+            }
+
+            if (string.IsNullOrEmpty(book.image))
+            {
+                book.image = "https://defaultimage.com/default.jpg"; // Default image if the user didn't provide one
+            }
+
+            // Save the book to the database
+            db.Books.Add(book);
+            db.SaveChanges();
+
+            return Json("Book Added Successfully!");
+        }
+
+        // Get Book by ID (GET)
+        [HttpGet]
+        public JsonResult GetBook(int id)
+        {
+            var book = db.Books.FirstOrDefault(b => b.book_id == id);
+            if (book != null)
+            {
+                return Json(book, JsonRequestBehavior.AllowGet);
+            }
+            return Json(null, JsonRequestBehavior.AllowGet);
+        }
+
+        // Edit Book (POST)
+        [HttpPost]
+        public JsonResult EditBook(Book updatedBook)
+        {
+            var existingBook = db.Books.FirstOrDefault(b => b.book_id == updatedBook.book_id);
+
+            if (existingBook != null)
+            {
+                // Update properties
+                existingBook.title = updatedBook.title;
+                existingBook.author = updatedBook.author;
+                existingBook.genre = updatedBook.genre;
+                existingBook.description = updatedBook.description;
+                existingBook.price = updatedBook.price;
+                existingBook.stock = updatedBook.stock;
+                existingBook.published_date = updatedBook.published_date;
+                existingBook.region = updatedBook.region;
+                existingBook.age = updatedBook.age;
+
+                existingBook.image = string.IsNullOrEmpty(updatedBook.image) ? existingBook.image : updatedBook.image;
+
+                // Save changes
+                db.SaveChanges();
+                return Json("Book Updated Successfully!");
+            }
+
+            return Json("Book not found!");
+        }
+
+
+
+        // Delete Book (POST)
+        [HttpPost]
+        public JsonResult DeleteBook(int id)
+        {
+            var book = db.Books.Find(id);
+            db.Books.Remove(book);
+            db.SaveChanges();
+            return Json("Book Deleted Successfully!");
+        }
 
         //This function executes that the unregistered/ logged out users can not access the admin page
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
