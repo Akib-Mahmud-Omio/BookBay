@@ -18,7 +18,7 @@ namespace E_Book_Store_1.Models
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
         public virtual DbSet<Session> Sessions { get; set; }
-
+        public virtual DbSet<Discussion> Discussions { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Admin>()
@@ -88,6 +88,11 @@ namespace E_Book_Store_1.Models
             modelBuilder.Entity<Log>()
                 .Property(e => e.action_type)
                 .IsUnicode(false);
+            modelBuilder.Entity<Discussion>()
+                .HasMany(d => d.DiscussionMessages)
+                .WithRequired(m => m.Discussion)
+                .HasForeignKey(m => m.discussion_id)
+                .WillCascadeOnDelete();
         }
     }
 }
