@@ -1,0 +1,21 @@
+﻿@model E_Book_Store_1.Models.DiscussionMessage
+
+<div class="d-flex mb-3" id="message-@Model.message_id">
+    <div class="flex-shrink-0">
+        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
+            @((Model.Customer != null ? Model.Customer.name.Substring(0,1).ToUpper() : "A"))
+        </div>
+    </div>
+    <div class="flex-grow-1 ms-2">
+        <div class="p-3 rounded-3 shadow-sm" style="background-color:#ffffff;">
+            <div class="d-flex justify-content-between mb-1">
+                <strong>@(Model.Customer != null ? Model.Customer.name : "Anonymous")</strong>
+                <small class="text-muted">@Model.posted_on.ToString("yyyy-MM-dd HH:mm")</small>
+            </div>
+            <div class="message-text">@Html.Raw(Html.Encode(Model.message_text).Replace("\n", "<br/>"))</div>
+        </div>
+        <a href="#" class="reply-link small text-decoration-none text-primary mt-1 d-inline-block" data-id="@Model.message_id">
+
+        </a>
+    </div>
+</div>

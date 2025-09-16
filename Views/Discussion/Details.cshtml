@@ -1,0 +1,121 @@
+﻿@model E_Book_Store_1.Models.Discussion
+@using System.Linq
+@{
+    ViewBag.Title = Model.title;
+    bool canPost = ViewBag.CanPost ?? false;
+    // safer extraction of Session value as int?
+    int? currentUserId = null;
+    if (Session["CustomerId"] != null)
+    {
+        try { currentUserId = Convert.ToInt32(Session["CustomerId"]); } catch { currentUserId = null; }
+    }
+}
+
+<div class="mb-3 d-flex justify-content-between align-items-center">
+    <a href="@Url.Action("Index","Discussion")" class="btn btn-light shadow-sm">← Back to Discussions</a>
+
+    <!-- Delete Thread button (only visible to creator) -->
+    @if (currentUserId != null && Model.created_by == currentUserId)
+    {
+        <!-- POST to /Discussion/Delete with id in form body -->
+        <form method="post" action="@Url.Action("Delete","Discussion")"
+              onsubmit="return confirm('Are you sure you want to delete this thread? This will remove all messages too.');"
+              class="m-0">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" value="@Model.discussion_id" />
+            <button type="submit" class="btn btn-danger btn-sm shadow-sm">🗑 Delete Thread</button>
+        </form>
+    }
+</div>
+
+<!-- Discussion Header -->
+<div class="card shadow-sm border-0 mb-3" style="background-color: #c1d6d3;">
+    <div class="card-body">
+        <h3 class="fw-bold">@Model.title</h3>
+        <div class="text-muted mb-1">
+            Book:
+            <span class="badge bg-info text-dark">
+                @(Model.Book != null ? Model.Book.title : Model.book_name)
+            </span>
+        </div>
+        <div class="text-muted small">
+            Started: @Model.created_on.ToString("yyyy-MM-dd HH:mm")
+            by <strong>@((Model.CreatedByCustomer != null) ? Model.CreatedByCustomer.name : "Anonymous")</strong>
+        </div>
+    </div>
+</div>
+
+<!-- Messages styled like chat -->
+<div id="messages" class="mb-4 p-3 rounded" style="background-color: #ffeae5; min-height: 200px;">
+    @if (!Model.DiscussionMessages.Any())
+    {
+        <div class="text-muted">No messages yet. Be the first to reply!</div>
+    }
+    else
+    {
+        foreach (var msg in Model.DiscussionMessages.OrderBy(m => m.posted_on))
+        {
+            @Html.Partial("_MessagePartial", msg)
+        }
+    }
+</div>
+
+<!-- Reply Section -->
+@if (canPost)
+{
+    <div class="card shadow-sm border-0">
+        <div class="card-body">
+            <h5 class="fw-bold">Write a reply</h5>
+            <form id="replyForm" method="post" action="@Url.Action("PostMessage","Discussion")">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="discussionId" value="@Model.discussion_id" />
+                <input type="hidden" name="parentId" id="parentId" value="" />
+                <div class="mb-2">
+                    <textarea name="messageText" id="messageText" class="form-control rounded-3" rows="3" placeholder="Type your reply..." required></textarea>
+                </div>
+                <button id="replyBtn" type="submit" class="btn btn-primary shadow-sm">💬 Post Reply</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info shadow-sm">
+        You are viewing as a guest. <a href="@Url.Action("Login","Account")">Login</a> to post replies.
+    </div>
+}
+
+@section Scripts {
+    <script>
+    $(function(){
+        $('#replyForm').submit(function(e){
+            e.preventDefault();
+            var $btn = $('#replyBtn').prop('disabled', true);
+            var form = $(this);
+            $.post(form.attr('action'), form.serialize())
+                .done(function(html){
+                    $('#messages').append(html);
+                    $('#messageText').val('');
+                    $('#parentId').val('');
+                    Swal.fire({icon:'success', title:'Posted', timer:1200, showConfirmButton:false});
+                })
+                .fail(function(xhr){
+                    if (xhr.status === 403) {
+                        Swal.fire('Login required', 'Please login to post a reply', 'warning');
+                        window.location = '@Url.Action("Login","Account")';
+                    } else {
+                        Swal.fire('Error', xhr.responseText || 'Could not post message', 'error');
+                    }
+                })
+                .always(function(){ $btn.prop('disabled', false); });
+        });
+
+        $('#messages').on('click', '.reply-link', function(e){
+            e.preventDefault();
+            var parentId = $(this).data('id');
+            $('#parentId').val(parentId);
+            $('html,body').animate({scrollTop: $('#replyForm').offset().top - 60}, 300);
+        });
+    });
+    </script>
+}
