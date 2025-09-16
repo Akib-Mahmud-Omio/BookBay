@@ -101,7 +101,34 @@
 <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
 
 <div class="container-fluid p-4">
-    
+    <!-- Quick Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card stat-card orders text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Total Orders</h6>
+                            <h2>@((int)Model["TotalOrders"])</h2>
+                        </div>
+                        <i class="fas fa-shopping-cart fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card stat-card revenue text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Total Revenue</h6>
+                            <h2>USD @((decimal)Model["TotalRevenue"])</h2>
+                        </div>
+                        <i class="fas fa-dollar-sign fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Similar pattern for other stat cards -->
         <div class="col-md-3">
             <div class="card stat-card customers text-white">
@@ -116,10 +143,230 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card stat-card books text-white">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="card-title">Total Books</h6>
+                            <h2>@((int)Model["TotalBooks"])</h2>
+                        </div>
+                        <i class="fas fa-book fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Recently Added Books -->
+    <div class="card custom-card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-book-open me-2"></i>Recently Added Books</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var book in (List<E_Book_Store_1.Models.Book>)Model["RecentBooks"])
+                {
+                    <div class="col-md-3 mb-3">
+                        <div class="card book-card h-100">
+                            <img src="@book.image" class="card-img-top" alt="@book.title" style="height: 350px; object-fit: cover;">
+                            <div class="card-body">
+                                <h6 class="card-title text-primary">@book.title</h6>
+                                <p class="card-text small mb-1">
+                                    <i class="fas fa-user me-1"></i> @book.author
+                                </p>
+                                <p class="card-text text-success">
+                                    <i class="fas fa-tag me-1"></i> USD @book.price
+                                </p>
+                                <small class="text-muted">
+                                    <i class="fas fa-calendar me-1"></i> @book.published_date
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
 
+    <!-- Recent Reviews -->
+    <div class="card custom-card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-comments me-2"></i>Recent Reviews</h5>
+        </div>
+        <div class="card-body">
+            @foreach (var review in (List<E_Book_Store_1.Models.Feedback>)Model["RecentReviews"])
+            {
+                <div class="review-item rounded">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="text-primary mb-2">@review.Book.title</h6>
+                        <div class="star-rating">
+                            @for (var i = 1; i <= review.rating; i++)
+                            {
+                                <i class="fas fa-star"></i>
+                            }
+                            @for (var i = review.rating + 1; i <= 5; i++)
+                            {
+                                <i class="far fa-star"></i>
+                            }
+                        </div>
+                    </div>
+                    <p class="small text-muted mb-2">
+                        <i class="fas fa-user me-1"></i> @review.Customer.name
+                        <span class="ms-2"><i class="fas fa-calendar me-1"></i> @review.date</span>
+                    </p>
+                    <p class="mb-0">@review.comment</p>
+                </div>
+            }
+        </div>
+    </div>
 
+    <!-- Revenue Graph -->
+    <div class="card custom-card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Monthly Revenue</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="revenueChart" height="100"></canvas>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Low Stock Alert -->
+        <div class="col-md-4">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Low Stock Alert</h5>
+                </div>
+                <div class="card-body">
+                    @if (((List<E_Book_Store_1.Models.Book>)Model["LowStockBooks"]).Any())
+                    {
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-circle me-2"></i>Books need restocking
+                        </div>
+                        <div class="list-group">
+                            @foreach (var book in (List<E_Book_Store_1.Models.Book>)Model["LowStockBooks"])
+                            {
+                                <div class="list-group-item stock-alert">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">@book.title</h6>
+                                            <small class="text-danger">
+                                                <i class="fas fa-box me-1"></i>@book.stock left in stock
+                                            </small>
+                                        </div>
+                                        <button class="btn btn-warning btn-sm" onclick="restockBook('@book.title')">
+                                            <i class="fas fa-sync-alt me-1"></i>Restock
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>All books are sufficiently stocked!
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Best Sellers -->
+        <div class="col-md-8">
+            <div class="card custom-card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-crown me-2"></i>Top 3 Best Sellers</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Book Title</th>
+                                    <th>Author</th>
+                                    <th>Genre</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var book in (List<E_Book_Store_1.Models.Book>)ViewData["TopStockBooks"])
+                                {
+                                    <tr>
+                                        <td>
+                                            <img src="@Url.Content(book.image)" alt="Book Image" class="rounded" style="height: 80px; object-fit: cover;">
+                                        </td>
+                                        <td class="align-middle">@book.title</td>
+                                        <td class="align-middle">
+                                            <i class="fas fa-user me-1"></i>@book.author
+                                        </td>
+                                        <td class="align-middle">
+                                            <span class="badge badge-custom bg-info">@book.genre</span>
+                                        </td>
+                                        <td class="align-middle">
+                                            <span class="badge badge-custom bg-success">@book.stock</span>
+                                        </td>
+                                        <td class="align-middle text-success">USD @book.price</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        const revenueData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model["RevenueGraphData"]));
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: revenueData.labels,
+                datasets: [{
+                    label: 'Revenue',
+                    data: revenueData.values,
+                    backgroundColor: 'rgba(92, 107, 192, 0.2)',
+                    borderColor: 'rgba(92, 107, 192, 1)',
+                    borderWidth: 2,
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: {
+                            borderDash: [5, 5]
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+}
 
 @{ var message = TempData["Message"] as string; }
 
